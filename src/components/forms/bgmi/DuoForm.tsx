@@ -461,21 +461,32 @@ export const BGMIDuoForm: React.FC = () => {
                   className="space-y-6"
                 >
                   {/* Payment QR Code */}
-                  <Card className="bg-gradient-to-r from-blue-500/10 to-purple-500/10">
-                    <CardContent className="p-4">
+                  <Card className="bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 border-2 border-primary/20">
+                    <CardContent className="p-6">
                       <div className="text-center space-y-4">
-                        <QrCode className="h-8 w-8 mx-auto text-primary" />
-                        <h3 className="font-semibold">Payment Instructions</h3>
-                        <div className="bg-white p-4 rounded-lg max-w-48 mx-auto">
-                          {/* QR Code placeholder - replace with actual QR code */}
-                          <div className="aspect-square bg-black/10 rounded flex items-center justify-center">
-                            <span className="text-sm text-muted-foreground">QR Code</span>
-                          </div>
+                        <div className="flex items-center justify-center gap-2 mb-2">
+                          <QrCode className="h-6 w-6 text-primary animate-pulse" />
+                          <h3 className="text-xl font-bold text-primary">Scan to Pay</h3>
+                          <QrCode className="h-6 w-6 text-primary animate-pulse" />
                         </div>
-                        <div className="space-y-2 text-sm">
-                          <p><strong>Amount:</strong> {formatCurrency(tournamentDetails.entryFee)}</p>
-                          <p><strong>UPI ID:</strong> gamearena@paytm</p>
-                          <p className="text-muted-foreground">Scan QR code or use UPI ID to make payment</p>
+                        
+                        <div className="bg-white p-6 rounded-xl shadow-lg max-w-sm mx-auto border-2 border-primary/10 hover:border-primary/30 transition-all duration-300 hover:shadow-xl">
+                          <img 
+                            src="/assets/qr/payment-qr.png" 
+                            alt="Payment QR Code - Scan to Pay" 
+                            className="w-full h-auto rounded-lg"
+                          />
+                        </div>
+                        
+                        <div className="space-y-3 pt-2">
+                          <div className="bg-primary/5 p-3 rounded-lg">
+                            <p className="text-sm text-muted-foreground">Team Entry Fee Amount</p>
+                            <p className="text-2xl font-bold text-primary">{formatCurrency(tournamentDetails.entryFee)}</p>
+                          </div>
+                          <div className="text-sm space-y-1">
+                            <p className="font-medium">UPI ID: <span className="text-primary">gamearena@paytm</span></p>
+                            <p className="text-muted-foreground">Scan QR code or use UPI ID to make payment</p>
+                          </div>
                         </div>
                       </div>
                     </CardContent>
@@ -483,21 +494,29 @@ export const BGMIDuoForm: React.FC = () => {
 
                   <div className="space-y-4">
                     {/* Transaction ID */}
+                    <Alert className="bg-yellow-50 border-yellow-200">
+                      <CreditCard className="h-4 w-4 text-yellow-600" />
+                      <AlertDescription className="text-yellow-800">
+                        <strong>Important:</strong> After making the payment, enter your Transaction ID below. You can find this in your payment app's transaction history.
+                      </AlertDescription>
+                    </Alert>
+                    
                     <div className="space-y-2">
-                      <Label htmlFor="transaction_id" className="flex items-center gap-2">
-                        <CreditCard className="h-4 w-4" />
-                        Transaction ID
+                      <Label htmlFor="transaction_id" className="flex items-center gap-2 text-base font-semibold">
+                        <CreditCard className="h-5 w-5 text-primary" />
+                        Transaction ID / UTR Number *
                       </Label>
                       <Input
                         id="transaction_id"
                         placeholder="Enter transaction ID from payment app"
                         {...register('transaction_id')}
                         onKeyDown={playSound}
-                        className={errors.transaction_id ? 'border-red-500' : ''}
+                        className={`text-lg h-12 ${errors.transaction_id ? 'border-red-500' : 'border-primary/30 focus:border-primary'}`}
                       />
                       {errors.transaction_id && (
-                        <p className="text-sm text-red-500">{errors.transaction_id.message}</p>
+                        <p className="text-sm text-red-500 font-medium">{errors.transaction_id.message}</p>
                       )}
+                      <p className="text-xs text-muted-foreground">Example: 123456789012 or TXN123ABC456</p>
                     </div>
 
                     {/* Payment Screenshot */}
