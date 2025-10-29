@@ -44,6 +44,7 @@ import { supabase } from '@/lib/supabase/client'
 import { registerForTournament } from '@/lib/supabase/rpc'
 import { useTypingSound } from '@/lib/hooks/useTypingSound'
 import { useSlotAvailability } from '@/lib/hooks/useSlotAvailability'
+import { useRegistrationCompletion } from '@/lib/hooks/useRegistrationCompletion'
 import { compressImage, formatCurrency } from '@/lib/utils'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 
@@ -96,6 +97,14 @@ export const FreeFireSquadForm: React.FC = () => {
 
   // Watch form values for step validation
   const watchedFields = watch()
+
+  // Registration completion hook
+  const { handleSuccess, handleError } = useRegistrationCompletion({
+    formReset: form.reset,
+    setCurrentStep,
+    setUploadedImageUrl,
+    tournamentId: tournamentDetails.tournamentId,
+  })
 
   // Registration mutation
   const registerMutation = useMutation({
@@ -157,11 +166,10 @@ export const FreeFireSquadForm: React.FC = () => {
       return result
     },
     onSuccess: (data) => {
-      // Success! Show success step
-      setCurrentStep(4)
+      handleSuccess(data.registration_id, data.slots_remaining)
     },
-    onError: (error) => {
-      console.error('Registration failed:', error)
+    onError: (error: Error) => {
+      handleError(error)
     }
   })
 
