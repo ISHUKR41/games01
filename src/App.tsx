@@ -7,6 +7,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { Suspense, lazy } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 // Layout components
 import { Navbar } from '@/components/layout/Navbar'
@@ -54,6 +55,9 @@ function App() {
         {/* Footer */}
         <Footer />
       </div>
+
+      {/* React Query DevTools - only in development */}
+      {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
     </ErrorBoundary>
   )
 }

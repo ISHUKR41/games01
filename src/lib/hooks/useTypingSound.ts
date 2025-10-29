@@ -41,22 +41,56 @@ export function useTypingSound(): UseTypingSoundReturn {
 
   // Initialize audio when component mounts
   useEffect(() => {
+    // Check if we're in the browser (SSR safety)
+    if (typeof window === 'undefined') {
+      return
+    }
+
     try {
-      // Create audio instance with typing sound
-      const audio = new Audio('/assets/sounds/typing.mp3')
-      
-      // Configure audio settings
-      audio.volume = 0.3 // Subtle volume level
+      // Create a simple click/typing sound using Web Audio API
+      // This is a fallback if the audio file doesn't exist
+      const createTypingSound = () => {
+        try {
+          const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+          
+          return () => {
+            const oscillator = audioContext.createOscillator()
+            const gainNode = audioContext.createGain()
+            
+            oscillator.connect(gainNode)
+            gainNode.connect(audioContext.destination)
+            
+            // Create a subtle click sound
+            oscillator.frequency.value = 800
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime)
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05)
+            
+            oscillator.start(audioContext.currentTime)
+            oscillator.stop(audioContext.currentTime + 0.05)
+          }
+        } catch (e) {
+          return null
+        }
+      }
+
+      // Try to load audio file first
+      const audio = new Audio('/sounds/typing.mp3')
+      audio.volume = 0.3
       audio.preload = 'auto'
       
-      // Handle audio loading
       const handleCanPlay = () => {
         isLoadedRef.current = true
       }
       
-      const handleError = (error: Event) => {
-        console.warn('Typing sound file not found - feature disabled')
-        isLoadedRef.current = false
+      const handleError = () => {
+        // Fallback to Web Audio API
+        const fallbackSound = createTypingSound()
+        if (fallbackSound) {
+          audioRef.current = { play: fallbackSound } as any
+          isLoadedRef.current = true
+        } else {
+          isLoadedRef.current = false
+        }
       }
 
       audio.addEventListener('canplay', handleCanPlay)
@@ -67,13 +101,14 @@ export function useTypingSound(): UseTypingSoundReturn {
       // Cleanup function
       return () => {
         if (audioRef.current) {
-          audioRef.current.removeEventListener('canplay', handleCanPlay)
-          audioRef.current.removeEventListener('error', handleError)
+          if ('removeEventListener' in audioRef.current) {
+            audioRef.current.removeEventListener('canplay', handleCanPlay)
+            audioRef.current.removeEventListener('error', handleError)
+          }
           audioRef.current = null
         }
       }
     } catch (error) {
-      console.warn('Audio not supported or typing sound file missing')
       isLoadedRef.current = false
     }
   }, [])
