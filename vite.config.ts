@@ -17,12 +17,16 @@ export default defineConfig({
     port: 5000,
     host: '0.0.0.0',
     strictPort: true,
-    allowedHosts: [
-      '.replit.dev',
-      '.repl.co',
-    ],
     hmr: {
-      clientPort: 5000,
+      protocol: 'ws',
+      host: 'localhost',
+      port: 5000,
+      clientPort: 443,
+      timeout: 30000,
+    },
+    watch: {
+      usePolling: false,
+      interval: 1000,
     },
   },
   build: {
