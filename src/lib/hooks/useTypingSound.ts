@@ -83,12 +83,13 @@ export function useTypingSound(): UseTypingSoundReturn {
       }
       
       const handleError = () => {
-        // Fallback to Web Audio API
+        // Fallback to Web Audio API (silent fallback, no warning)
         const fallbackSound = createTypingSound()
         if (fallbackSound) {
           audioRef.current = { play: fallbackSound } as any
           isLoadedRef.current = true
         } else {
+          // Disable sound silently if neither method works
           isLoadedRef.current = false
         }
       }

@@ -7,7 +7,7 @@
  * payment screenshot upload, and real-time slot checking
  */
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
@@ -179,11 +179,25 @@ export const FreeFireSquadForm: React.FC = () => {
     if (file) {
       setValue('payment_screenshot', file, { shouldValidate: true })
       
-      // Create preview URL
+      // Revoke old URL before creating new one to prevent memory leak
+      if (uploadedImageUrl) {
+        URL.revokeObjectURL(uploadedImageUrl)
+      }
+      
+      // Create new preview URL
       const previewUrl = URL.createObjectURL(file)
       setUploadedImageUrl(previewUrl)
     }
   }
+
+  // Cleanup effect to revoke object URL when component unmounts
+  useEffect(() => {
+    return () => {
+      if (uploadedImageUrl) {
+        URL.revokeObjectURL(uploadedImageUrl)
+      }
+    }
+  }, [uploadedImageUrl])
 
   // Step validation
   const isStepValid = (step: number) => {
