@@ -10,13 +10,13 @@
 import { createClient } from '@supabase/supabase-js'
 import { Database } from './types' // Import the generated types
 
-// Get Supabase configuration from environment variables with fallbacks
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://ielwxcdoejxahmdsfznj.supabase.co'
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImllbHd4Y2RvZWp4YWhtZHNmem5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUzNzg0NjIsImV4cCI6MjA1MDk1NDQ2Mn0.ZqX7_3QtMVf4W1jdtafWBoOMuy9_DDlABJYK39aRYGo'
+// Get Supabase configuration from environment variables
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 // Validate required environment variables
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Supabase configuration missing! Using fallback values.')
+  throw new Error('Missing Supabase configuration! Please check your .env file.')
 }
 
 // Create and export the Supabase client with TypeScript types
