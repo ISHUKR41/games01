@@ -73,7 +73,7 @@ export const HomePage: React.FC = () => {
     {
       title: 'BGMI (Battlegrounds Mobile India)',
       description: 'Experience the ultimate battle royale with 100 players fighting for survival. Strategic gameplay, teamwork, and skill determine the victor.',
-      image: '/src/assets/images/bgmi-hero.jpg',
+      image: '/assets/images/bgmi-hero.jpg',
       link: '/bgmi',
       color: 'from-orange-500 to-red-600',
       icon: Target,
@@ -83,7 +83,7 @@ export const HomePage: React.FC = () => {
     {
       title: 'Free Fire',
       description: 'Fast-paced 10-minute battles with up to 50 players. Quick reflexes and smart tactics lead to victory in this action-packed shooter.',
-      image: '/src/assets/images/freefire-hero.jpg', 
+      image: '/assets/images/freefire-hero.jpg', 
       link: '/freefire',
       color: 'from-blue-500 to-purple-600',
       icon: Zap,

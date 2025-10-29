@@ -2,6 +2,7 @@
  * main.tsx
  * Entry point for the GameArena tournament platform
  * Sets up React Query, routing, and global providers
+ * Initializes AOS (Animate On Scroll) library for modern animations
  */
 
 import React from 'react'
@@ -9,8 +10,19 @@ import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'sonner'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 import App from './App'
 import './index.css'
+
+// Initialize AOS (Animate On Scroll) for modern animations
+AOS.init({
+  duration: 800,
+  easing: 'ease-in-out',
+  once: true,
+  offset: 100,
+  delay: 50,
+})
 
 // Create a client for React Query with optimized settings
 const queryClient = new QueryClient({

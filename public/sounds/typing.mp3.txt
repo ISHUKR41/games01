@@ -1,0 +1,2 @@
+This is a placeholder for the typing sound.
+The useTypingSound hook has a fallback to Web Audio API if this file is missing.
