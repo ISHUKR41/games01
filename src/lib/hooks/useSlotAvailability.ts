@@ -49,10 +49,8 @@ export function useSlotAvailability(tournamentId: string) {
           remaining: data.remaining || 0
         }
       } catch (error: any) {
-        // Handle 401 errors gracefully - database may not be set up yet
-        if (error?.message?.includes('401') || error?.status === 401) {
-          console.warn(`Database not set up yet for tournament ${tournamentId}. Using fallback data.`)
-          
+        // Handle errors gracefully - database may not be set up yet
+        if (error?.message?.includes('401') || error?.status === 401 || error?.message?.includes('SUPABASE_NOT_CONFIGURED')) {
           // Return fallback data based on tournament ID until database is ready
           const fallbackCapacities: Record<string, number> = {
             'bgmi-solo-id': 100,
@@ -76,19 +74,18 @@ export function useSlotAvailability(tournamentId: string) {
         throw error
       }
     },
-    staleTime: 10000, // Consider data stale after 10 seconds
-    gcTime: 30000, // Keep in cache for 30 seconds (was cacheTime in v4)
-    refetchOnWindowFocus: true, // Refetch when user returns to tab
-    refetchOnReconnect: true, // Refetch when connection is restored
-    retry: 1, // Reduce retries for 401 errors
+    staleTime: 60000, // Consider data stale after 60 seconds (reduced refetch frequency)
+    gcTime: 120000, // Keep in cache for 2 minutes
+    refetchOnWindowFocus: false, // Disable refetch on focus to prevent constant reloading
+    refetchOnReconnect: false, // Disable refetch on reconnect
+    refetchInterval: false, // No automatic refetching
+    retry: 1, // Only retry once
     enabled: !!tournamentId // Only run if tournamentId is provided
   })
 
   // Set up real-time subscription for live updates
   useEffect(() => {
     if (!tournamentId || isSubscribed) return
-
-    console.log(`Setting up real-time subscription for tournament: ${tournamentId}`)
 
     // Create a channel for this specific tournament
     const channel = supabase
@@ -101,28 +98,27 @@ export function useSlotAvailability(tournamentId: string) {
           table: 'registrations',
           filter: `tournament_id=eq.${tournamentId}` // Only listen to changes for this tournament
         },
-        (payload) => {
-          console.log('Registration change detected:', payload)
-          
+        (_payload: any) => {
           // Invalidate and refetch slot availability when registrations change
           queryClient.invalidateQueries({ queryKey })
         }
       )
-      .subscribe((status) => {
-        console.log(`Subscription status for ${tournamentId}:`, status)
-        
+      .subscribe((status: string) => {
         if (status === 'SUBSCRIBED') {
           setIsSubscribed(true)
+        }
+        // Silently handle errors and timeouts - don't spam console
+        if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+          setIsSubscribed(false)
         }
       })
 
     // Cleanup subscription on unmount or tournamentId change
     return () => {
-      console.log(`Cleaning up subscription for tournament: ${tournamentId}`)
       supabase.removeChannel(channel)
       setIsSubscribed(false)
     }
-  }, [tournamentId, queryClient, isSubscribed])
+  }, [tournamentId, queryClient, queryKey, isSubscribed])
 
   // Additional effect to handle admin actions (approve/reject)
   useEffect(() => {
@@ -138,9 +134,7 @@ export function useSlotAvailability(tournamentId: string) {
           schema: 'public',
           table: 'admin_actions'
         },
-        (payload) => {
-          console.log('Admin action detected:', payload)
-          
+        () => {
           // Refetch slot availability when admin performs actions
           queryClient.invalidateQueries({ queryKey })
         }
@@ -150,7 +144,7 @@ export function useSlotAvailability(tournamentId: string) {
     return () => {
       supabase.removeChannel(adminChannel)
     }
-  }, [tournamentId, queryClient])
+  }, [tournamentId, queryClient, queryKey])
 
   return query
 }
@@ -230,9 +224,11 @@ export function useAllSlotAvailability() {
         throw error
       }
     },
-    staleTime: 30000, // 30 seconds
-    gcTime: 60000, // 1 minute (was cacheTime in v4)
-    refetchOnWindowFocus: true
+    staleTime: 60000, // 60 seconds
+    gcTime: 120000, // 2 minutes
+    refetchOnWindowFocus: false, // Disable to prevent constant reloading
+    refetchOnReconnect: false,
+    refetchInterval: false
   })
 
   // Set up real-time subscription for all registrations
