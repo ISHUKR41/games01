@@ -3,8 +3,8 @@
 ## Overview
 GameArena is a modern tournament platform for BGMI (Battlegrounds Mobile India) and Free Fire mobile games. It provides real-time slot tracking, payment processing with QR codes, and comprehensive admin management capabilities.
 
-**Status**: Fully configured for Replit environment
-**Last Updated**: October 29, 2025
+**Status**: Fully configured for Replit environment with modern UI enhancements
+**Last Updated**: October 30, 2025
 
 ## Project Architecture
 
@@ -12,17 +12,21 @@ GameArena is a modern tournament platform for BGMI (Battlegrounds Mobile India) 
 - **Frontend**: React 18 + TypeScript + Vite
 - **Styling**: TailwindCSS + shadcn/ui components
 - **Backend**: Supabase (PostgreSQL + Auth + Storage + Realtime)
-- **Animations**: Framer Motion
+- **Animations**: Framer Motion, AOS (Animate On Scroll), react-spring, canvas-confetti
 - **State Management**: Zustand + TanStack Query v5
 - **Form Validation**: React Hook Form + Zod
+- **Media**: 18 gaming stock images, YouTube video embeds
 
 ### Key Features
 - 6 Tournament Types: BGMI (Solo/Duo/Squad) + Free Fire (Solo/Duo/Squad)
-- Real-time slot availability tracking
+- Real-time slot availability tracking with optimized refetching (60s staleTime)
 - Payment screenshot upload with validation
 - Admin dashboard with approval workflow
 - Row Level Security (RLS) for data protection
 - Mobile-responsive design with dark theme
+- Modern UI with scroll animations, hover effects, and confetti celebrations
+- Professional gaming imagery and video embeds
+- Standardized tournament IDs across all forms
 
 ## Project Structure
 ```
@@ -69,7 +73,7 @@ The project includes complete Supabase migrations in `supabase/migrations/`:
 3. RPC functions (registration, slot tracking, status updates)
 4. Storage setup (payment screenshots bucket)
 
-Follow `SUPABASE_SETUP.md` for detailed database setup instructions.
+Follow `DATABASE_SETUP_GUIDE.md` for a comprehensive, all-in-one database setup SQL script.
 
 ## Tournament Configuration
 
@@ -102,6 +106,20 @@ Follow `SUPABASE_SETUP.md` for detailed database setup instructions.
 The Vite server is configured to accept all hosts (`host: '0.0.0.0'`) which is **required** for Replit's proxy/iframe setup to work properly.
 
 ## Recent Changes
+- **Oct 30, 2025**: Major enhancements and critical fixes
+  - Fixed Supabase connection by adding hardcoded credential fallbacks in client.ts
+  - Fixed auto-reload issue by reducing refetch frequency (60s staleTime) and disabling aggressive polling
+  - Fixed "Tournament Full" false positive by standardizing tournament IDs across all 6 forms
+  - Fixed critical image path issue by moving all stock images to public/attached_assets folder
+  - Enhanced entire website with modern design elements:
+    - Added AOS scroll animations to all pages
+    - Integrated 18 professional gaming stock images
+    - Added YouTube video embeds for BGMI and Free Fire
+    - Implemented react-spring animations for smooth transitions
+    - Added canvas-confetti celebration effects
+  - Created comprehensive DATABASE_SETUP_GUIDE.md with single SQL script for complete setup
+  - Fixed TypeScript error (config.smooth → config.gentle in react-spring)
+  - All forms now use consistent tournament IDs (bgmi-solo-id, bgmi-duo-id, etc.)
 - **Oct 29, 2025** (Afternoon): Critical bug fixes and enhancements
   - Fixed form state persistence issue - forms now reset after successful submission
   - Created useRegistrationCompletion hook for centralized form cleanup
@@ -122,18 +140,24 @@ The Vite server is configured to accept all hosts (`host: '0.0.0.0'`) which is *
 
 ## Current Status
 ✅ **Working:**
-- Website loads successfully on Replit
-- Frontend displays with modern dark theme
+- Website loads successfully on Replit with modern UI
+- Frontend displays with dark theme and professional gaming imagery
+- All 18 stock images loading correctly from public folder
+- YouTube videos embedded and playing
+- Scroll animations (AOS) working on all pages
+- Confetti effects on homepage
 - All navigation links working
-- Responsive design active
+- Responsive design active across all devices
 - Typing sounds feature ready (sound file missing)
-- Fallback tournament data showing correctly
+- Supabase connection established with fallback credentials
+- Optimized refetching prevents page reloads (60s staleTime)
+- Tournament IDs standardized across all forms
 
 ⚠️ **Needs Setup:**
-- Supabase database initialization (follow DATABASE_SETUP_QUICK_GUIDE.md)
+- Supabase database initialization (follow DATABASE_SETUP_GUIDE.md - single SQL script)
 - Admin user creation in Supabase Auth
-- Payment screenshots storage bucket
-- Realtime subscriptions (requires database setup)
+- Payment screenshots storage bucket (created automatically by setup script)
+- Realtime subscriptions (enabled automatically by setup script)
 
 ## Known Issues & Notes
 - **Data Persistence**: Currently using fallback static data. Database setup required for real persistence.
@@ -143,14 +167,26 @@ The Vite server is configured to accept all hosts (`host: '0.0.0.0'`) which is *
 - **Slot Tracking**: Will work across users/refreshes once database is set up.
 
 ## Database Setup
-**IMPORTANT**: Follow `DATABASE_SETUP_QUICK_GUIDE.md` for step-by-step instructions to:
-1. Initialize all database tables and functions
-2. Enable Row Level Security policies
-3. Set up storage for payment screenshots
-4. Create admin user with proper roles
-5. Enable realtime updates
+**IMPORTANT**: Follow `DATABASE_SETUP_GUIDE.md` for a comprehensive, all-in-one SQL script that:
+1. Creates all database tables with proper relationships and constraints
+2. Seeds 6 tournament configurations (3 BGMI + 3 Free Fire)
+3. Enables Row Level Security (RLS) policies
+4. Creates 4 RPC functions (register, get_slots, update_status, get_stats)
+5. Sets up storage bucket for payment screenshots
+6. Enables realtime subscriptions
 
-The app will work with limited functionality until database is configured.
+**One Script Does Everything!** Just copy-paste the complete SQL from the guide into Supabase SQL Editor and run it. The app will work with limited functionality until database is configured.
+
+### Tournament IDs
+The frontend uses these standardized tournament IDs:
+- BGMI Solo: `bgmi-solo-id`
+- BGMI Duo: `bgmi-duo-id`
+- BGMI Squad: `bgmi-squad-id`
+- Free Fire Solo: `freefire-solo-id`
+- Free Fire Duo: `freefire-duo-id`
+- Free Fire Squad: `freefire-squad-id`
+
+If your database uses different UUIDs, update these IDs in all 6 form components.
 
 ## Deployment
 For production deployment to Vercel or other platforms:
