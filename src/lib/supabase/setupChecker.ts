@@ -47,7 +47,7 @@ export async function checkDatabaseSetup(): Promise<SetupStatus> {
     // Check 2: Can we call RPC functions?
     console.log('🔍 Checking RPC functions...')
     const { data: slotData, error: rpcError } = await (supabase as any)
-      .rpc('get_slot_availability', { p_tournament_id: 'bgmi-solo-id' })
+      .rpc('get_slot_availability', { p_tournament_id: '10000000-0000-4000-8000-000000000001' })
 
     if (rpcError) {
       status.errors.push(`RPC functions: ${rpcError.message}`)

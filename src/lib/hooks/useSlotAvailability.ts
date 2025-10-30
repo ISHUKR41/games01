@@ -55,12 +55,12 @@ export function useSlotAvailability(tournamentId: string) {
         
         // Return fallback data based on tournament ID until database is ready
         const fallbackCapacities: Record<string, number> = {
-          'bgmi-solo-id': 100,
-          'bgmi-duo-id': 50, 
-          'bgmi-squad-id': 25,
-          'freefire-solo-id': 48,
-          'freefire-duo-id': 24,
-          'freefire-squad-id': 12
+          '10000000-0000-4000-8000-000000000001': 100, // BGMI Solo
+          '10000000-0000-4000-8000-000000000002': 50,  // BGMI Duo
+          '10000000-0000-4000-8000-000000000003': 25,  // BGMI Squad
+          '20000000-0000-4000-8000-000000000001': 48,  // Free Fire Solo
+          '20000000-0000-4000-8000-000000000002': 24,  // Free Fire Duo
+          '20000000-0000-4000-8000-000000000003': 12   // Free Fire Squad
         }
         
         const capacity = fallbackCapacities[tournamentId] || 100
@@ -208,14 +208,14 @@ export function useAllSlotAvailability() {
         if (error?.message?.includes('401') || error?.status === 401) {
           console.warn('Database not set up yet. Using fallback tournament data.')
           
-          // Return fallback data for all tournaments
+          // Return fallback data for all tournaments (using actual UUIDs that match database)
           return [
-            { tournamentId: 'bgmi-solo-id', game: 'bgmi' as const, mode: 'solo' as const, capacity: 100, filled: 0, remaining: 100 },
-            { tournamentId: 'bgmi-duo-id', game: 'bgmi' as const, mode: 'duo' as const, capacity: 50, filled: 0, remaining: 50 },
-            { tournamentId: 'bgmi-squad-id', game: 'bgmi' as const, mode: 'squad' as const, capacity: 25, filled: 0, remaining: 25 },
-            { tournamentId: 'freefire-solo-id', game: 'freefire' as const, mode: 'solo' as const, capacity: 48, filled: 0, remaining: 48 },
-            { tournamentId: 'freefire-duo-id', game: 'freefire' as const, mode: 'duo' as const, capacity: 24, filled: 0, remaining: 24 },
-            { tournamentId: 'freefire-squad-id', game: 'freefire' as const, mode: 'squad' as const, capacity: 12, filled: 0, remaining: 12 }
+            { tournamentId: '10000000-0000-4000-8000-000000000001', game: 'bgmi' as const, mode: 'solo' as const, capacity: 100, filled: 0, remaining: 100 },
+            { tournamentId: '10000000-0000-4000-8000-000000000002', game: 'bgmi' as const, mode: 'duo' as const, capacity: 50, filled: 0, remaining: 50 },
+            { tournamentId: '10000000-0000-4000-8000-000000000003', game: 'bgmi' as const, mode: 'squad' as const, capacity: 25, filled: 0, remaining: 25 },
+            { tournamentId: '20000000-0000-4000-8000-000000000001', game: 'freefire' as const, mode: 'solo' as const, capacity: 48, filled: 0, remaining: 48 },
+            { tournamentId: '20000000-0000-4000-8000-000000000002', game: 'freefire' as const, mode: 'duo' as const, capacity: 24, filled: 0, remaining: 24 },
+            { tournamentId: '20000000-0000-4000-8000-000000000003', game: 'freefire' as const, mode: 'squad' as const, capacity: 12, filled: 0, remaining: 12 }
           ]
         }
         

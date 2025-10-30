@@ -71,10 +71,11 @@ export const BGMIPage: React.FC = () => {
   /**
    * Tournament Configuration
    * Defines capacity, fees, and prizes for each game mode
+   * Tournament IDs match the database seed data UUIDs
    */
   const tournamentInfo = {
     solo: {
-      id: 'bgmi-solo-id',
+      id: '10000000-0000-4000-8000-000000000001',
       capacity: 100,
       entryFee: 20,
       winnerPrize: 350,
@@ -84,7 +85,7 @@ export const BGMIPage: React.FC = () => {
       color: 'orange'
     },
     duo: {
-      id: 'bgmi-duo-id',
+      id: '10000000-0000-4000-8000-000000000002',
       capacity: 50,
       entryFee: 40,
       winnerPrize: 350,
@@ -94,7 +95,7 @@ export const BGMIPage: React.FC = () => {
       color: 'red'
     },
     squad: {
-      id: 'bgmi-squad-id',
+      id: '10000000-0000-4000-8000-000000000003',
       capacity: 25,
       entryFee: 80,
       winnerPrize: 350,

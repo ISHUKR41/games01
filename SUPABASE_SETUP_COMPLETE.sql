@@ -454,19 +454,20 @@ ALTER TABLE registrations REPLICA IDENTITY FULL;
 ALTER TABLE participants REPLICA IDENTITY FULL;
 ALTER TABLE admin_actions REPLICA IDENTITY FULL;
 
--- STEP 12: Seed Tournament Data with SPECIFIC IDs
+-- STEP 12: Seed Tournament Data with SPECIFIC UUIDs
 -- ============================================================================
--- CRITICAL: These IDs must match your frontend code exactly!
+-- CRITICAL: These UUIDs must match your frontend code exactly!
 INSERT INTO tournaments (id, game, mode, entry_fee_rs, prize_winner_rs, prize_runner_rs, prize_per_kill_rs, max_capacity) VALUES
--- BGMI Tournaments
-('bgmi-solo-id', 'bgmi', 'solo', 20, 350, 250, 9, 100),
-('bgmi-duo-id', 'bgmi', 'duo', 40, 350, 250, 9, 50),
-('bgmi-squad-id', 'bgmi', 'squad', 80, 350, 250, 9, 25),
--- Free Fire Tournaments
-('freefire-solo-id', 'freefire', 'solo', 20, 350, 150, 5, 48),
-('freefire-duo-id', 'freefire', 'duo', 40, 350, 150, 5, 24),
-('freefire-squad-id', 'freefire', 'squad', 80, 350, 150, 5, 12)
+-- BGMI Tournaments (ID pattern: 10000000-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+('10000000-0000-4000-8000-000000000001'::uuid, 'bgmi', 'solo', 20, 350, 250, 9, 100),
+('10000000-0000-4000-8000-000000000002'::uuid, 'bgmi', 'duo', 40, 350, 250, 9, 50),
+('10000000-0000-4000-8000-000000000003'::uuid, 'bgmi', 'squad', 80, 350, 250, 9, 25),
+-- Free Fire Tournaments (ID pattern: 20000000-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+('20000000-0000-4000-8000-000000000001'::uuid, 'freefire', 'solo', 20, 350, 150, 5, 48),
+('20000000-0000-4000-8000-000000000002'::uuid, 'freefire', 'duo', 40, 350, 150, 5, 24),
+('20000000-0000-4000-8000-000000000003'::uuid, 'freefire', 'squad', 80, 350, 150, 5, 12)
 ON CONFLICT (game, mode) DO UPDATE SET
+    id = EXCLUDED.id,
     entry_fee_rs = EXCLUDED.entry_fee_rs,
     prize_winner_rs = EXCLUDED.prize_winner_rs,
     prize_runner_rs = EXCLUDED.prize_runner_rs,

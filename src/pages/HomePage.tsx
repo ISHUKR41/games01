@@ -168,14 +168,14 @@ export const HomePage: React.FC = () => {
   // TOURNAMENT CONFIGURATION
   // ─────────────────────────────────────────────────────────────────────────
   // Tournament IDs for real-time slot availability tracking
-  // In production, these would be fetched from the database
+  // These UUIDs match the database seed data
   const tournamentIds = {
-    bgmiSolo: 'bgmi-solo-id',
-    bgmiDuo: 'bgmi-duo-id', 
-    bgmiSquad: 'bgmi-squad-id',
-    freefireSolo: 'freefire-solo-id',
-    freefireDuo: 'freefire-duo-id',
-    freefireSquad: 'freefire-squad-id'
+    bgmiSolo: '10000000-0000-4000-8000-000000000001',
+    bgmiDuo: '10000000-0000-4000-8000-000000000002', 
+    bgmiSquad: '10000000-0000-4000-8000-000000000003',
+    freefireSolo: '20000000-0000-4000-8000-000000000001',
+    freefireDuo: '20000000-0000-4000-8000-000000000002',
+    freefireSquad: '20000000-0000-4000-8000-000000000003'
   }
 
   // ─────────────────────────────────────────────────────────────────────────

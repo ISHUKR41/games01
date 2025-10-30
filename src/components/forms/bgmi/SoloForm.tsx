@@ -80,7 +80,7 @@ export const BGMISoloForm: React.FC = () => {
     runnerPrize: 250,
     killPrize: 9,
     capacity: 100,
-    tournamentId: 'bgmi-solo-id'
+    tournamentId: '10000000-0000-4000-8000-000000000001'
   }
 
   // Get real-time slot availability

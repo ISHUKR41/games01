@@ -631,20 +631,27 @@ ALTER TABLE tournaments REPLICA IDENTITY FULL;
 -- SECTION 10: SEED TOURNAMENT DATA
 -- ============================================================================
 
--- Insert the 6 pre-configured tournament types
-INSERT INTO tournaments (game, mode, entry_fee_rs, prize_winner_rs, prize_runner_rs, prize_per_kill_rs, max_capacity) VALUES
--- BGMI Tournaments
-('bgmi', 'solo', 20, 350, 250, 9, 100),   -- 100 solo players
-('bgmi', 'duo', 40, 350, 250, 9, 50),     -- 50 duo teams (2 players each)
-('bgmi', 'squad', 80, 350, 250, 9, 25),   -- 25 squad teams (4 players each)
+-- Insert the 6 pre-configured tournament types with specific UUIDs
+-- These UUIDs match the frontend expectations for real-time slot tracking
+INSERT INTO tournaments (id, game, mode, entry_fee_rs, prize_winner_rs, prize_runner_rs, prize_per_kill_rs, max_capacity) VALUES
+-- BGMI Tournaments (ID pattern: 10000000-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+('10000000-0000-4000-8000-000000000001'::uuid, 'bgmi', 'solo', 20, 350, 250, 9, 100),   -- 100 solo players
+('10000000-0000-4000-8000-000000000002'::uuid, 'bgmi', 'duo', 40, 350, 250, 9, 50),     -- 50 duo teams (2 players each)
+('10000000-0000-4000-8000-000000000003'::uuid, 'bgmi', 'squad', 80, 350, 250, 9, 25),   -- 25 squad teams (4 players each)
 
--- Free Fire Tournaments
-('freefire', 'solo', 20, 350, 150, 5, 48),   -- 48 solo players
-('freefire', 'duo', 40, 350, 150, 5, 24),    -- 24 duo teams (2 players each)
-('freefire', 'squad', 80, 350, 150, 5, 12)   -- 12 squad teams (4 players each)
+-- Free Fire Tournaments (ID pattern: 20000000-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+('20000000-0000-4000-8000-000000000001'::uuid, 'freefire', 'solo', 20, 350, 150, 5, 48),   -- 48 solo players
+('20000000-0000-4000-8000-000000000002'::uuid, 'freefire', 'duo', 40, 350, 150, 5, 24),    -- 24 duo teams (2 players each)
+('20000000-0000-4000-8000-000000000003'::uuid, 'freefire', 'squad', 80, 350, 150, 5, 12)   -- 12 squad teams (4 players each)
 
 -- Use ON CONFLICT to prevent duplicate inserts if running script multiple times
-ON CONFLICT (game, mode) DO NOTHING;
+ON CONFLICT (game, mode) DO UPDATE SET
+  id = EXCLUDED.id,
+  entry_fee_rs = EXCLUDED.entry_fee_rs,
+  prize_winner_rs = EXCLUDED.prize_winner_rs,
+  prize_runner_rs = EXCLUDED.prize_runner_rs,
+  prize_per_kill_rs = EXCLUDED.prize_per_kill_rs,
+  max_capacity = EXCLUDED.max_capacity;
 
 
 -- ============================================================================

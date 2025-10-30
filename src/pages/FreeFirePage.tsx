@@ -71,10 +71,11 @@ export const FreeFirePage: React.FC = () => {
   /**
    * Tournament Configuration
    * Defines capacity, fees, and prizes for each game mode
+   * Tournament IDs match the database seed data UUIDs
    */
   const tournamentInfo = {
     solo: {
-      id: 'freefire-solo-id',
+      id: '20000000-0000-4000-8000-000000000001',
       capacity: 48,
       entryFee: 20,
       winnerPrize: 350,
@@ -84,7 +85,7 @@ export const FreeFirePage: React.FC = () => {
       color: 'blue'
     },
     duo: {
-      id: 'freefire-duo-id',
+      id: '20000000-0000-4000-8000-000000000002',
       capacity: 24,
       entryFee: 40,
       winnerPrize: 350,
@@ -94,7 +95,7 @@ export const FreeFirePage: React.FC = () => {
       color: 'purple'
     },
     squad: {
-      id: 'freefire-squad-id',
+      id: '20000000-0000-4000-8000-000000000003',
       capacity: 12,
       entryFee: 80,
       winnerPrize: 350,
