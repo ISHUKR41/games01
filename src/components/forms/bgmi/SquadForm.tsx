@@ -68,9 +68,9 @@ export const BGMISquadForm: React.FC = () => {
   }
 
   // Get real-time slot availability
-  const { data: slotData } = useSlotAvailability(tournamentDetails.tournamentId)
-  const slotsRemaining = slotData?.remaining || 0
-  const isFull = slotsRemaining === 0
+  const { data: slotData, isLoading: slotsLoading } = useSlotAvailability(tournamentDetails.tournamentId)
+  const slotsRemaining = slotData?.remaining ?? 0
+  const isFull = !slotsLoading && slotsRemaining === 0
 
   // Form setup
   const form = useForm<BgmiSquadFormData>({
