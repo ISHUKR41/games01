@@ -75,18 +75,25 @@ export const AdminLogin: React.FC = () => {
         
         if (session) {
           // Check if user has admin role
-          const { data: roleData } = await supabase
+          const { data: roleData, error: roleError } = await supabase
             .from('user_roles')
             .select('role')
             .eq('user_id', session.user.id)
             .eq('role', 'admin')
             .single()
 
+          // If database error, just continue to show login form
+          if (roleError && (roleError.message?.includes('relation') || roleError.code === 'PGRST200' || roleError.code === '42P01')) {
+            console.warn('Database not setup yet. User will need to setup database first.')
+            await supabase.auth.signOut()
+            return
+          }
+
           if (roleData) {
             // User is already authenticated as admin, redirect to dashboard
             navigate('/admin/dashboard', { replace: true })
             return
-          } else {
+          } else if (!roleError) {
             // User is authenticated but not an admin, sign them out
             await supabase.auth.signOut()
           }
@@ -129,8 +136,20 @@ export const AdminLogin: React.FC = () => {
         .eq('role', 'admin')
         .single()
 
-      if (roleError || !roleData) {
-        // User doesn't have admin role, sign them out
+      if (roleError) {
+        // Database not setup or user doesn't have admin role
+        await supabase.auth.signOut()
+        
+        // Check if it's a database error
+        if (roleError.message?.includes('relation') || roleError.code === 'PGRST200' || roleError.code === '42P01') {
+          throw new Error('DATABASE NOT SETUP! Please run SUPABASE_SETUP_COMPLETE.sql in your Supabase SQL Editor first.')
+        }
+        
+        throw new Error('Access denied. Admin privileges required.')
+      }
+      
+      if (!roleData) {
+        // User exists but is not an admin
         await supabase.auth.signOut()
         throw new Error('Access denied. Admin privileges required.')
       }

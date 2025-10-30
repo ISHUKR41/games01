@@ -50,28 +50,26 @@ export function useSlotAvailability(tournamentId: string) {
         }
       } catch (error: any) {
         // Handle errors gracefully - database may not be set up yet
-        if (error?.message?.includes('401') || error?.status === 401 || error?.message?.includes('SUPABASE_NOT_CONFIGURED')) {
-          // Return fallback data based on tournament ID until database is ready
-          const fallbackCapacities: Record<string, number> = {
-            'bgmi-solo-id': 100,
-            'bgmi-duo-id': 50, 
-            'bgmi-squad-id': 25,
-            'freefire-solo-id': 48,
-            'freefire-duo-id': 24,
-            'freefire-squad-id': 12
-          }
-          
-          const capacity = fallbackCapacities[tournamentId] || 100
-          
-          return {
-            capacity,
-            filled: 0, // Show as empty until database is ready
-            remaining: capacity
-          }
+        // ANY error means database is not configured properly
+        console.warn('Database not configured. Using fallback slot data:', error.message)
+        
+        // Return fallback data based on tournament ID until database is ready
+        const fallbackCapacities: Record<string, number> = {
+          'bgmi-solo-id': 100,
+          'bgmi-duo-id': 50, 
+          'bgmi-squad-id': 25,
+          'freefire-solo-id': 48,
+          'freefire-duo-id': 24,
+          'freefire-squad-id': 12
         }
         
-        // Re-throw other errors
-        throw error
+        const capacity = fallbackCapacities[tournamentId] || 100
+        
+        return {
+          capacity,
+          filled: 0, // Show as empty until database is ready
+          remaining: capacity
+        }
       }
     },
     staleTime: 60000, // Consider data stale after 60 seconds (reduced refetch frequency)
