@@ -10,11 +10,15 @@
 import { createClient } from '@supabase/supabase-js'
 import { Database } from './types'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const FALLBACK_SUPABASE_URL = 'https://ielwxcdoejxahmdsfznj.supabase.co'
+const FALLBACK_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImllbHd4Y2RvZWp4YWhtZHNmem5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUzNzg0NjIsImV4cCI6MjA1MDk1NDQ2Mn0.ZqX7_3QtMVf4W1jdtafWBoOMuy9_DDlABJYK39aRYGo'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || FALLBACK_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || FALLBACK_SUPABASE_ANON_KEY
 
 console.log('Supabase URL loaded:', supabaseUrl ? 'Yes' : 'No')
 console.log('Supabase Key loaded:', supabaseAnonKey ? 'Yes' : 'No')
+console.log('Using hardcoded credentials:', !import.meta.env.VITE_SUPABASE_URL)
 
 /**
  * Create a mock Supabase client for when environment variables are not configured
