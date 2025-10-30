@@ -69,7 +69,7 @@ export const FreeFireSoloForm: React.FC = () => {
   // Get real-time slot availability
   const { data: slotData, isLoading: slotsLoading } = useSlotAvailability(tournamentDetails.tournamentId)
   const slotsRemaining = slotData?.remaining ?? 0
-  const isFull = !slotsLoading && slotsRemaining === 0
+  const isFull = slotData !== undefined && slotsRemaining === 0
 
   // Form setup
   const form = useForm<FreefireSoloFormData>({
