@@ -63,7 +63,7 @@ export const BGMIDuoForm: React.FC = () => {
     runnerPrize: 250,
     killPrize: 9,
     capacity: 50,
-    tournamentId: 'bgmi-duo-tournament-id' // This would come from a tournament query
+    tournamentId: 'bgmi-duo-id'
   }
 
   // Get real-time slot availability

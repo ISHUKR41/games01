@@ -64,7 +64,7 @@ export const BGMISquadForm: React.FC = () => {
     runnerPrize: 250,
     killPrize: 9,
     capacity: 25,
-    tournamentId: 'bgmi-squad-tournament-id' // This would come from a tournament query
+    tournamentId: 'bgmi-squad-id'
   }
 
   // Get real-time slot availability

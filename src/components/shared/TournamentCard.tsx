@@ -23,10 +23,11 @@
  * - Registration status and call-to-action
  */
 
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Tilt from 'react-parallax-tilt'
+import confetti from 'canvas-confetti'
 import { Trophy, Medal, Target, Users, ArrowRight, Clock, Sparkles } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -85,6 +86,35 @@ export const TournamentCard: React.FC<TournamentCardProps> = ({
   // Determine tournament availability status
   const isFull = remaining === 0
   const isFillingFast = remaining < capacity * 0.2 && remaining > 0
+  
+  // Track previous filled count to detect new registrations
+  const prevFilledRef = useRef(filled)
+  
+  // ─────────────────────────────────────────────────────────────────────────
+  // CONFETTI EFFECT ON NEW REGISTRATION
+  // ─────────────────────────────────────────────────────────────────────────
+  useEffect(() => {
+    // Check if slots filled increased (new registration)
+    if (filled > prevFilledRef.current && filled > 0) {
+      // Trigger confetti animation
+      const gameColors = game === 'bgmi' 
+        ? ['#f97316', '#dc2626', '#ec4899'] 
+        : ['#3b82f6', '#8b5cf6', '#6366f1']
+      
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.6 },
+        colors: gameColors,
+        ticks: 100,
+        gravity: 1.2,
+        scalar: 1.2
+      })
+    }
+    
+    // Update previous filled count
+    prevFilledRef.current = filled
+  }, [filled, game])
   
   // ─────────────────────────────────────────────────────────────────────────
   // STYLING CONFIGURATION
@@ -319,6 +349,22 @@ export const TournamentCard: React.FC<TournamentCardProps> = ({
             <motion.div
               whileHover={{ scale: isFull ? 1 : 1.02 }}
               whileTap={{ scale: isFull ? 1 : 0.98 }}
+              onClick={() => {
+                // Trigger mini confetti on button click
+                if (!isFull) {
+                  const gameColors = game === 'bgmi' 
+                    ? ['#f97316', '#dc2626'] 
+                    : ['#3b82f6', '#8b5cf6']
+                  
+                  confetti({
+                    particleCount: 20,
+                    spread: 40,
+                    origin: { y: 0.7 },
+                    colors: gameColors,
+                    ticks: 60
+                  })
+                }
+              }}
             >
               <Button 
                 asChild 

@@ -208,7 +208,7 @@ export const BGMIPage: React.FC = () => {
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
           <img 
-            src="/assets/images/bgmi-tournament.jpg" 
+            src="/attached_assets/stock_images/bgmi_battlegrounds_m_f949e56a.jpg" 
             alt="BGMI Tournament"
             className="w-full h-full object-cover"
           />

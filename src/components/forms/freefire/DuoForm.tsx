@@ -65,7 +65,7 @@ export const FreeFireDuoForm: React.FC = () => {
     runnerPrize: 150,
     killPrize: 5,
     capacity: 24,
-    tournamentId: 'freefire-duo-tournament-id' // This would come from a tournament query
+    tournamentId: 'freefire-duo-id'
   }
 
   // Get real-time slot availability

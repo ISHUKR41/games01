@@ -65,7 +65,7 @@ export const FreeFireSquadForm: React.FC = () => {
     runnerPrize: 150,
     killPrize: 5,
     capacity: 12,
-    tournamentId: 'freefire-squad-tournament-id' // This would come from a tournament query
+    tournamentId: 'freefire-squad-id'
   }
 
   // Get real-time slot availability

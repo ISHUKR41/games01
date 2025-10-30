@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useSpring, animated, config } from 'react-spring'
 import { 
   User, 
   Gamepad2, 
@@ -24,7 +25,8 @@ import {
   Trophy,
   Target,
   Users,
-  QrCode
+  QrCode,
+  Sparkles
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -53,6 +55,21 @@ export const BGMISoloForm: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1)
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null)
   const { playSound } = useTypingSound()
+  
+  // React-spring animation for smooth step transitions
+  const slideAnimation = useSpring({
+    opacity: 1,
+    transform: 'translateX(0px)',
+    from: { opacity: 0, transform: 'translateX(20px)' },
+    reset: true,
+    config: config.gentle
+  })
+  
+  // Progress bar animation
+  const progressAnimation = useSpring({
+    width: `${(currentStep / 4) * 100}%`,
+    config: config.gentle
+  })
 
   // Tournament details
   const tournamentDetails = {
@@ -63,7 +80,7 @@ export const BGMISoloForm: React.FC = () => {
     runnerPrize: 250,
     killPrize: 9,
     capacity: 100,
-    tournamentId: 'bgmi-solo-tournament-id' // This would come from a tournament query
+    tournamentId: 'bgmi-solo-id'
   }
 
   // Get real-time slot availability
@@ -277,18 +294,24 @@ export const BGMISoloForm: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Progress Indicator */}
-      <Card>
+      {/* Progress Indicator with React-Spring */}
+      <Card className="overflow-hidden border-2">
         <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-primary animate-pulse" />
               Step {currentStep} of 4: {stepTitles[currentStep - 1]}
             </CardTitle>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm font-semibold text-primary">
               {Math.round((currentStep / 4) * 100)}% Complete
             </div>
           </div>
-          <Progress value={(currentStep / 4) * 100} className="mt-2" />
+          <div className="mt-3 h-2 bg-muted rounded-full overflow-hidden">
+            <animated.div 
+              style={progressAnimation}
+              className="h-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-600 rounded-full"
+            />
+          </div>
         </CardHeader>
 
         <CardContent>

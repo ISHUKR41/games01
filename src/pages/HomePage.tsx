@@ -217,7 +217,7 @@ export const HomePage: React.FC = () => {
     {
       title: 'BGMI (Battlegrounds Mobile India)',
       description: 'Experience the ultimate battle royale with 100 players fighting for survival. Strategic gameplay, teamwork, and skill determine the victor.',
-      image: '/assets/images/bgmi-hero.jpg',
+      image: '/attached_assets/stock_images/bgmi_battlegrounds_m_390b95e8.jpg',
       link: '/bgmi',
       gradient: 'from-orange-500 via-red-500 to-pink-600',
       icon: Target,
@@ -228,7 +228,7 @@ export const HomePage: React.FC = () => {
     {
       title: 'Free Fire',
       description: 'Fast-paced 10-minute battles with up to 50 players. Quick reflexes and smart tactics lead to victory in this action-packed shooter.',
-      image: '/assets/images/freefire-hero.jpg', 
+      image: '/attached_assets/stock_images/free_fire_mobile_gam_69eab333.jpg', 
       link: '/freefire',
       gradient: 'from-blue-500 via-purple-500 to-indigo-600',
       icon: Zap,
@@ -274,21 +274,26 @@ export const HomePage: React.FC = () => {
   ]
 
   // ─────────────────────────────────────────────────────────────────────────
-  // GALLERY IMAGES FOR SWIPER CAROUSEL
+  // GALLERY IMAGES FOR SWIPER CAROUSEL - Using Stock Images
   // ─────────────────────────────────────────────────────────────────────────
   const galleryImages = [
     {
-      url: '/assets/images/bgmi-tournament.jpg',
+      url: '/attached_assets/stock_images/bgmi_battlegrounds_m_2a69fbe6.jpg',
       title: 'BGMI Tournaments',
       description: 'Intense battle royale action'
     },
     {
-      url: '/assets/images/freefire-tournament.jpg',
+      url: '/attached_assets/stock_images/free_fire_mobile_gam_9439db74.jpg',
       title: 'Free Fire Tournaments',
       description: 'Fast-paced competitive gaming'
     },
     {
-      url: '/assets/images/trophy.jpg',
+      url: '/attached_assets/stock_images/esports_gaming_tourn_327fbc1b.jpg',
+      title: 'Esports Championship',
+      description: 'Professional gaming events'
+    },
+    {
+      url: '/attached_assets/stock_images/gaming_trophy_winner_4425a549.jpg',
       title: 'Championship Rewards',
       description: 'Win amazing prizes'
     }
@@ -515,76 +520,105 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          SECTION 2: VIDEO BACKGROUND SECTION
+          SECTION 2: GAMING VIDEO SHOWCASE
           ═══════════════════════════════════════════════════════════════════
-          Full-width section with gradient background (ready for video)
+          YouTube video embeds showcasing BGMI and Free Fire gameplay
       */}
       <section 
-        className="relative py-32 overflow-hidden"
+        className="relative py-20 overflow-hidden bg-gradient-to-b from-background to-muted/30"
         data-aos="fade-up"
       >
-        {/* Video Background Placeholder - Replace with <video> tag when ready */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/40 via-blue-900/40 to-pink-900/40">
-          {/* Animated overlay pattern */}
-          <motion.div 
-            className="absolute inset-0 opacity-20"
-            style={{
-              backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
-              backgroundSize: '40px 40px'
-            }}
-            animate={{
-              backgroundPosition: ['0px 0px', '40px 40px']
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-          />
-        </div>
-
-        {/* Content overlay */}
-        <div className="relative container mx-auto px-4 text-center z-10">
+        <div className="container mx-auto px-4">
           <motion.div
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
             variants={staggerContainer}
-            className="max-w-4xl mx-auto space-y-8"
+            className="space-y-12"
           >
-            <motion.div variants={scaleIn}>
-              <Badge className="mb-4 px-4 py-2 bg-white/10 backdrop-blur-xl border-white/20">
-                <Sparkles className="mr-2 h-4 w-4" />
-                Why Choose GameArena
+            {/* Section Header */}
+            <motion.div variants={fadeInUp} className="text-center space-y-4">
+              <Badge className="mb-4 px-4 py-2 bg-primary/10 border-primary/30">
+                <Play className="mr-2 h-4 w-4" />
+                Gameplay Showcase
               </Badge>
+              <h2 className="text-4xl md:text-5xl font-bold">
+                Watch Epic
+                <span className="block mt-2 bg-gradient-to-r from-orange-500 via-red-500 to-purple-500 bg-clip-text text-transparent">
+                  Tournament Highlights
+                </span>
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Experience the intensity and excitement of competitive mobile gaming
+              </p>
             </motion.div>
 
-            <motion.h2 
-              variants={fadeInUp}
-              className="text-4xl md:text-6xl font-bold text-white"
-            >
-              The Ultimate Gaming
-              <span className="block mt-2 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                Tournament Experience
-              </span>
-            </motion.h2>
+            {/* Video Grid */}
+            <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {/* BGMI Gameplay Video */}
+              <motion.div 
+                variants={fadeInLeft}
+                data-aos="fade-right"
+                className="group"
+              >
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-orange-500/30 hover:border-orange-500/60 transition-all">
+                  <div className="aspect-video bg-gradient-to-br from-orange-500/20 to-red-500/20">
+                    <iframe
+                      className="w-full h-full"
+                      src="https://www.youtube.com/embed/gMZe4a0OV5o"
+                      title="BGMI Tournament Gameplay"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                    <Badge className="bg-orange-500/90 text-white border-0">
+                      <Target className="mr-1 h-3 w-3" />
+                      BGMI
+                    </Badge>
+                    <h3 className="text-white font-semibold mt-2">BGMI Tournament Highlights</h3>
+                  </div>
+                </div>
+              </motion.div>
 
-            <motion.p 
-              variants={fadeInUp}
-              className="text-xl text-white/80 leading-relaxed"
-            >
-              Join a thriving community of passionate gamers. Compete in professionally 
-              organized tournaments with fair play, instant payouts, and 24/7 support.
-            </motion.p>
+              {/* Free Fire Gameplay Video */}
+              <motion.div 
+                variants={fadeInRight}
+                data-aos="fade-left"
+                className="group"
+              >
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-blue-500/30 hover:border-blue-500/60 transition-all">
+                  <div className="aspect-video bg-gradient-to-br from-blue-500/20 to-purple-500/20">
+                    <iframe
+                      className="w-full h-full"
+                      src="https://www.youtube.com/embed/qzJxRV_aQG8"
+                      title="Free Fire Tournament Gameplay"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                    <Badge className="bg-blue-500/90 text-white border-0">
+                      <Zap className="mr-1 h-3 w-3" />
+                      Free Fire
+                    </Badge>
+                    <h3 className="text-white font-semibold mt-2">Free Fire Tournament Highlights</h3>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
 
-            <motion.div variants={fadeInUp}>
+            {/* Call to Action */}
+            <motion.div variants={fadeInUp} className="text-center pt-8">
               <Button 
                 size="lg" 
                 asChild 
-                className="bg-white text-black hover:bg-white/90 px-8 py-6 text-lg font-semibold shadow-2xl"
+                className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 px-8 py-6 text-lg font-semibold shadow-xl"
               >
                 <Link to="#tournaments">
-                  Get Started Now
+                  Join These Tournaments
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>

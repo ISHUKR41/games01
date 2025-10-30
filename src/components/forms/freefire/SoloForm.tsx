@@ -63,7 +63,7 @@ export const FreeFireSoloForm: React.FC = () => {
     runnerPrize: 150,
     killPrize: 5,
     capacity: 48,
-    tournamentId: 'freefire-solo-tournament-id' // This would come from a tournament query
+    tournamentId: 'freefire-solo-id'
   }
 
   // Get real-time slot availability

@@ -219,7 +219,7 @@ export const FreeFirePage: React.FC = () => {
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
           <img 
-            src="/assets/images/freefire-tournament.jpg" 
+            src="/attached_assets/stock_images/free_fire_mobile_gam_7a59046d.jpg" 
             alt="Free Fire Tournament"
             className="w-full h-full object-cover"
           />
