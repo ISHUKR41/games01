@@ -206,7 +206,11 @@ If you've followed all steps and still have issues:
    - Share them for debugging
 
 3. **Verify Environment Variables:**
-   - Check that Replit Secrets has all values
+   - Check that Replit Secrets has all values:
+     - `VITE_SUPABASE_URL` (your Supabase project URL)
+     - `VITE_SUPABASE_ANON_KEY` (NOT PUBLISHABLE_DEFAULT_KEY!)
+     - `VITE_ADMIN_EMAIL`
+     - `VITE_ADMIN_PASSWORD`
    - Restart the application after checking
 
 4. **Check Database Tables:**

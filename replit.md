@@ -51,14 +51,14 @@ gamearena/
 ## Development Setup
 
 ### Environment Configuration
-The application uses Supabase for backend services. Required environment variables (with fallback values in code):
+The application uses Supabase for backend services. Required environment variables (configured in Replit Secrets):
 - `VITE_SUPABASE_URL`: Supabase project URL
-- `VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY`: Supabase anon/public key
-- `VITE_SUPABASE_PROJECT_ID`: Supabase project ID
+- `VITE_SUPABASE_ANON_KEY`: Supabase anonymous/public key (find in Supabase Dashboard > Settings > API)
+- `VITE_SUPABASE_PROJECT_ID`: Supabase project ID (optional)
 - `VITE_ADMIN_EMAIL`: Admin login email
 - `VITE_ADMIN_PASSWORD`: Admin login password
 
-Note: The application has hardcoded fallback values in `src/lib/supabase/client.ts` for development.
+Note: The application has hardcoded fallback values in `src/lib/supabase/client.ts` for development. These are configured in Replit Secrets.
 
 ### Workflow
 - **Server**: Runs `npm run dev` on port 5000
